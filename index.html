@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>YT Live</title>
+    <style>
+        button:focus {
+            outline: 8px ridge rgb(170 50 220 / 0.6);
+            border-radius: 2rem;
+        }
+        button {font-size: inherit;}
+    </style>
+</head>
+<body style="font-size: xx-large;">
+    <div style="display: flex;flex-flow: column;width:fit-content;gap:2rem">
+        <button data-yt="bfaKXCvFs6o" autofocus>ABP Ananda</button>
+        <button data-yt="8aApFBmEJV0">Zee 24 Ghanta</button>
+    </div>
+    <script>
+        async function test(channel){
+            return fetch(`https://www.youtube.com/@${channel}/streams`)
+            .then(resp => resp.text())
+            .then(t =>{
+                const regexp = /"contents":{"twoColumnBrowseResultsRenderer":(.*)},"header":{"pageHeaderRenderer"/gm;
+                const r = JSON.parse(regexp.exec(t)[1]).tabs.find((x) => x.tabRenderer.title == 'Live')
+                    .tabRenderer.content.richGridRenderer.contents
+                    .filter(x => "richItemRenderer" in x && !("upcomingEventData" in x.richItemRenderer.content.videoRenderer 
+                                    || "lengthText" in x.richItemRenderer.content.videoRenderer));
+                return r.map(x => [x.richItemRenderer.content.videoRenderer.videoId,
+                    x.richItemRenderer.content.videoRenderer.descriptionSnippet.runs[0].text]);
+            });
+        }
+    </script>
+
+    <script>
+        const handleKeyEvent = (event) => {
+            const curBtn = document.activeElement;
+            switch (event.keyCode) {
+                case 38: // Up
+                // Handle up arrow press
+                console.log("Up arrow pressed");
+                // Example: move focus up in a list
+                break;
+                case 40: // Down
+                // Handle down arrow press
+                console.log("Down arrow pressed");
+
+                // Example: move focus down in a list
+                break;
+                case 37: // Left
+                    console.log("Left arrow pressed");
+                    break;
+                case 39: // Right
+                    console.log("Right arrow pressed");
+                    break;
+                case 13: // Enter/Select
+                    console.log("Enter/Select pressed");
+                    break;
+                default:
+                // Handle other keys if needed
+                console.log("Other key pressed:", event.keyCode);
+            }        
+        }
+
+        // Listen for Keyboard Events dispatched by Fire TV app's WebView
+        window.addEventListener("keyup", (event) => {
+            if (event.key !== undefined) {
+                // Handle the event with KeyboardEvent.key
+                handleKeyEvent(event);
+            }
+        });
+    </script>
+</body>
+</html>
