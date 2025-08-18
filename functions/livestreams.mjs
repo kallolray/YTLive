@@ -8,7 +8,8 @@ async function getStreams(channel){
             .filter(x => "richItemRenderer" in x && !("upcomingEventData" in x.richItemRenderer.content.videoRenderer 
                             || "lengthText" in x.richItemRenderer.content.videoRenderer));
         return r.map(x => [x.richItemRenderer.content.videoRenderer.videoId,
-            x.richItemRenderer.content.videoRenderer.descriptionSnippet.runs[0].text]);
+            x.richItemRenderer.content.videoRenderer.descriptionSnippet.runs[0].text,
+            x.richItemRenderer.content.videoRenderer.thumbnail.thumbnails.at(-1)]);
     });
 }
 
@@ -23,4 +24,5 @@ exports.handler = async event => {
         body: JSON.stringify(data),
     }
 }
+
 
