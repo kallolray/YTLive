@@ -5,5 +5,6 @@ export default async (req, context) => {
 };
 
 export const config = {
-  path: "/travel-guide/:city/:country"
+  path: "/test/:city/:country"
+
 };
