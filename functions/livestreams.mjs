@@ -1,4 +1,4 @@
-async function test(channel){
+async function getStreams(channel){
     return fetch(`https://www.youtube.com/@${channel}/streams`)
     .then(resp => resp.text())
     .then(t =>{
@@ -12,6 +12,14 @@ async function test(channel){
     });
 }
 
-const channels = ["NDTV",'Zee24Ghanta','abpanandatv']
-test(channels[2]).then(a => 
-    console.log(JSON.stringify(a)));
+exports.handler = async event => {
+    const channel = event.queryStringParameters.channel || 'NDTV';
+    const r = await getStreams(channel);
+    return {
+        statusCode: 200,
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: await getStreams(channel),
+    }
+}
