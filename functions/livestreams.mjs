@@ -14,12 +14,13 @@ async function getStreams(channel){
 
 exports.handler = async event => {
     const channel = event.queryStringParameters.channel || 'NDTV';
-    const r = await getStreams(channel);
+    const data = await getStreams(channel);
     return {
         statusCode: 200,
         headers: {
         'Content-Type': 'application/json'
         },
-        body: await getStreams(channel),
+        body: JSON.stringify(data),
     }
 }
+
