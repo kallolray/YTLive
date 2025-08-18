@@ -9,7 +9,7 @@ async function getStreams(channel){
                             || "lengthText" in x.richItemRenderer.content.videoRenderer));
         return r.map(x => [x.richItemRenderer.content.videoRenderer.videoId,
             x.richItemRenderer.content.videoRenderer.descriptionSnippet.runs[0].text,
-            x.richItemRenderer.content.videoRenderer.thumbnail.thumbnails.at(-1)]);
+            x.richItemRenderer.content.videoRenderer.thumbnail.thumbnails.at(0)]);
     });
 }
 
@@ -25,6 +25,7 @@ exports.handler = async event => {
         body: JSON.stringify(data),
     }
 }
+
 
 
 
