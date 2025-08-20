@@ -45,6 +45,24 @@
     </div>
     <script>
         var player;
+        function isRunningOnFireTV() {
+            const userAgent = navigator.userAgent;
+            // Common indicators found in Fire TV user agents
+            const fireTVKeywords = [
+                "FireTV",
+                "AFT", // Amazon Fire TV
+                "Silk", // Amazon's browser, often used on Fire devices
+                "Kindle", // Older Fire OS devices might include this
+                "KFT", // Kindle Fire TV
+            ];
+
+            for (const keyword of fireTVKeywords) {
+                if (userAgent.includes(keyword)) {
+                return true;
+                }
+            }
+            return false;
+        }        
         function onYouTubeIframeAPIReady() {
             let ht = window.innerHeight, wd = window.innerWidth;
             if(ht*16.0/9.0 > wd) ht = wd*9.0/16.0;
@@ -64,7 +82,8 @@
 
         // 4. The API will call this function when the video player is ready.
         function onPlayerReady(event) {
-            player.mute();
+            if(isRunningOnFireTV()) player.setVolume(100);
+            else player.mute();
             showSelectionDiv();
         }
 
