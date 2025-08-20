@@ -12,28 +12,33 @@
         button {font-size: inherit;}
         #divStreams{
             display: flex; flex-wrap: wrap; width: 99vw; gap:1rem; font-size: medium; 
-            div{height: 4rem; overflow-y: hidden;}
+            height: 85vh; overflow-y: auto;
+            div{height: 4rem; overflow: hidden;}
         }
         #divChannles{
-            display: flex;flex-flow: row;width:fit-content;gap:2rem; margin-bottom: 15px;
+            display: flex;flex-flow: row; flex-wrap: wrap;gap:1rem; margin-bottom: 15px;
         }
         #divOverlay{
             position:fixed; top: 0; background-color: whitesmoke; width:100vw;height:100vh; padding-top: 10px;
         }
+        body{font-size: x-large; overflow: hidden; margin: 0;}
+        .card{
+            height: fit-content;
+            div{overflow: hidden;}
+        }
     </style>
     <script async src="https://www.youtube.com/iframe_api"></script>
 </head>
-<body style="font-size: xx-large; overflow: hidden;">
+<body>
     <div id="player">Loading .....</div>
     <div id="divOverlay">
         <div id="divChannles" style="display: none;">
             <button data-yt="abpanandatv" data-type="C">ABP Ananda</button>
-            <button data-yt="Zee24Ghanta" data-type="C">Zee 24 Ghanta</button>
-            <button data-yt="republicbangla" data-type="C">Republic Bangla</button>
+            <button data-yt="Zee24Ghanta" data-type="C">24 Ghanta</button>
+            <button data-yt="republicbangla" data-type="C">R Bangla</button>
             <button data-yt="NDTV" data-type="C">NDTV</button>
-            <button data-yt="RepublicWorld" data-type="C">Republic World</button>
+            <button data-yt="RepublicWorld" data-type="C">R World</button>
             <button data-yt="TimesNow" data-type="C">Times Now</button>
-            <label id="lbl1"></label>
         </div>
         <div id="divWaitForData" style="display:none">Getting Data - Please wait</div>
         <div id="divStreams" style="display: none;" data-count="0"></div>
@@ -41,9 +46,12 @@
     <script>
         var player;
         function onYouTubeIframeAPIReady() {
+            let ht = window.innerHeight, wd = window.innerWidth;
+            if(ht*16.0/9.0 > wd) ht = wd*9.0/16.0;
+            else wd = ht*16.0/9.0;
             player = new YT.Player('player', {
-                height: window.innerHeight,
-                width: window.innerWidth,
+                height: ht,
+                width: wd,
                 playerVars: {
                     'playsinline': 0
                 },
@@ -87,7 +95,7 @@
             .then(data => {
                 for(const d of data)
                     divStreams.insertAdjacentHTML('beforeend',
-                    `<button data-yt="${d[0]}" data-type="S" autofocus>
+                    `<button data-yt="${d[0]}" data-type="S" class='card'>
                         <img src="${d[2].url}"></img>
                         <div style='width:${d[2].width}px'>${d[1]}</div>
                     </button>`);
@@ -145,7 +153,7 @@
         }
 
         window.addEventListener("keyup", handleKeyEvent, true);
-        lbl1.innerText = `${window.innerWidth}/${window.innerHeight}`;
+        //lbl1.innerText = `${window.innerWidth}/${window.innerHeight}`;
     </script>
 </body>
 </html>
