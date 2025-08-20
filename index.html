@@ -126,7 +126,7 @@
             const curBtn = document.activeElement;
             const type = curBtn.dataset.type;
             switch (event.keyCode) {
-                case 38: // Up
+/*                case 38: // Up
                     if(type != 'C')
                         (divChannles.querySelector('.selected')??divChannles.firstElementChild).focus();
                     break;
@@ -146,7 +146,9 @@
                     else
                         curBtn.parentElement.firstElementChild.focus()
                     break;
+*/                
                 case 13: // Enter/Select
+                    if(player.getPlayerState() == YT.PlayerState.PLAYING) break;
                     if(type == 'C'){
                         divChannles.querySelector('.selected')?.classList.remove('selected');
                         getStream(curBtn.dataset.yt);
