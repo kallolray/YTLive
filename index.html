@@ -17,22 +17,26 @@
         #divChannles{
             display: flex;flex-flow: row;width:fit-content;gap:2rem; margin-bottom: 15px;
         }
+        #divOverlay{
+            position:fixed; top: 0; background-color: whitesmoke; width:100vw;height:100vh; padding-top: 10px;
+        }
     </style>
     <script async src="https://www.youtube.com/iframe_api"></script>
 </head>
-<body style="font-size: xx-large;">
+<body style="font-size: xx-large; overflow: hidden;">
     <div id="player">Loading .....</div>
-    <div id="divSelection" style="position:fixed; top: 10; display: none;">
-        <div id="divChannles">
+    <div id="divOverlay">
+        <div id="divChannles" style="display: none;">
             <button data-yt="abpanandatv" data-type="C">ABP Ananda</button>
             <button data-yt="Zee24Ghanta" data-type="C">Zee 24 Ghanta</button>
             <button data-yt="republicbangla" data-type="C">Republic Bangla</button>
             <button data-yt="NDTV" data-type="C">NDTV</button>
             <button data-yt="RepublicWorld" data-type="C">Republic World</button>
             <button data-yt="TimesNow" data-type="C">Times Now</button>
+            <label id="lbl1"></label>
         </div>
         <div id="divWaitForData" style="display:none">Getting Data - Please wait</div>
-        <div id="divStreams" data-count="0"></div>
+        <div id="divStreams" style="display: none;" data-count="0"></div>
     </div>
     <script>
         var player;
@@ -64,13 +68,12 @@
     </script>
     <script>
         function showSelectionDiv(){
-            document.querySelector('#player').style.display = 'none';
-            divSelection.style.display = 'block';
+            divOverlay.style.backgroundColor = 'whitesmoke';
+            divChannles.style.display = divStreams.style.display = 'flex';
             if(divStreams.dataset.count > 0)
                 (divStreams.querySelector('.selected')??divStreams.firstElementChild).focus();
             else
                 (divChannles.querySelector('.selected')??divChannles.firstElementChild).focus();
-            window.addEventListener("keyup", handleKeyEvent, true);
         }
 
         function getStream(channel){
@@ -122,17 +125,27 @@
                         getStream(curBtn.dataset.yt);
                     }else{
                         divStreams.querySelector('.selected')?.classList.remove('selected');
-                        divSelection.style.display = 'none';
-                        window.removeEventListener("keyup", handleKeyEvent, true);
+                        divChannles.style.display = divStreams.style.display = 'none';
+                        divOverlay.style.backgroundColor = 'transparent';
+                        //window.removeEventListener("keyup", handleKeyEvent, true);
                         document.querySelector('#player').style.display = 'block';
                         player.loadVideoById(curBtn.dataset.yt);
                     }
                     curBtn.classList.add('selected');
                     break;
+                case 80: //p
+                case 179: //play/pause buttton
+                    if(player.getPlayerState() == YT.PlayerState.PLAYING)
+                        player.pauseVideo();
+                    else player.playVideo();
+                default:
+                    console.log(event.keyCode);
+                    break;
             }        
         }
 
         window.addEventListener("keyup", handleKeyEvent, true);
+        lbl1.innerText = `${window.innerWidth}/${window.innerHeight}`;
     </script>
 </body>
 </html>
