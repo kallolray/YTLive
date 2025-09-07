@@ -157,7 +157,7 @@
                         divChannles.style.display = divStreams.style.display = 'none';
                         divOverlay.style.backgroundColor = 'transparent';
                         //window.removeEventListener("keyup", handleKeyEvent, true);
-                        document.querySelector('#player').style.display = 'block';
+                        //document.querySelector('#player').style.display = 'block';
                         player.loadVideoById(curBtn.dataset.yt);
                     }
                     curBtn.classList.add('selected');
@@ -168,6 +168,7 @@
                     if(player.getPlayerState() == YT.PlayerState.PLAYING)
                         player.pauseVideo();
                     else player.playVideo();
+                    break;
                 default:
                     console.log(event.keyCode);
                     break;
@@ -180,4 +181,5 @@
 </body>
 
 </html>
+
 
